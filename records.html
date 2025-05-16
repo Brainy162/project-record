@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Student Records – UNIBEN Student Portal</title>
+  <link rel="stylesheet" href="school.css">
+</head>
+<body>
+  <nav>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" />
+    <label for="nav-toggle" class="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </label>
+    <div class="brand">UNIBEN Student Portal</div>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="register.html">Register</a></li>
+      <li><a href="records.html" aria-current="page">Records</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="search-bar">
+      <label for="searchMat">Search Matric No:</label>
+      <input id="searchMat" type="text" placeholder="Enter Mat No.">
+      <button id="btnSearch" class="btn">Search</button>
+    </div>
+
+    <h2>Student Records</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>S/N</th><th>Name</th><th>Mat No.</th><th>Faculty</th>
+          <th>Department</th><th>Email</th><th>Level</th>
+        </tr>
+      </thead>
+      <tbody id="recordsBody"></tbody>
+    </table>
+    <p>Can't find your name? <a href="register.html">Register here</a></p>
+  </main>
+
+  <script>
+    function renderTable(filter='') {
+      const students = JSON.parse(localStorage.getItem('students') || '[]');
+      const tbody = document.getElementById('recordsBody');
+      tbody.innerHTML = '';
+      students.forEach((s, i) => {
+        if (filter && !s.matno.toLowerCase().includes(filter.toLowerCase())) return;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${i + 1}</td>
+          <td>${s.fullname}</td>
+          <td>${s.matno}</td>
+          <td>${s.faculty}</td>
+          <td>${s.department}</td>
+          <td>${s.email}</td>
+          <td>${s.level}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      if (!tbody.children.length) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No records found.</td></tr>';
+      }
+    }
+
+    document.getElementById('btnSearch').addEventListener('click', () => {
+      renderTable(document.getElementById('searchMat').value.trim());
+    });
+    document.getElementById('searchMat').addEventListener('keypress', e => {
+      if (e.key === 'Enter') renderTable(e.target.value.trim());
+    });
+    document.addEventListener('DOMContentLoaded', () => renderTable());
+  </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Register New Student – UNIBEN Student Portal</title>
+  <link rel="stylesheet" href="school.css">
+</head>
+<body>
+  <nav>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" />
+    <label for="nav-toggle" class="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </label>
+    <div class="brand">UNIBEN Student Portal</div>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="register.html" aria-current="page">Register</a></li>
+      <li><a href="records.html">Records</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <h2>Register New Student</h2>
+    <form id="studentForm" class="form">
+      <div class="form-group">
+        <label for="fullname">Full Name</label>
+        <input type="text" id="fullname" name="fullname" placeholder="Full Name" required>
+      </div>
+      <div class="form-group">
+        <label for="matno">Matriculation Number</label>
+        <input type="text" id="matno" name="matno" placeholder="Mat No." required>
+      </div>
+      <div class="form-group">
+        <label for="faculty">Faculty</label>
+        <input type="text" id="faculty" name="faculty" placeholder="Faculty" required>
+      </div>
+      <div class="form-group">
+        <label for="department">Department</label>
+        <input type="text" id="department" name="department" placeholder="Department" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="Email" required>
+      </div>
+      <div class="form-group">
+        <label for="level">Class Level</label>
+        <select id="level" name="level" required>
+          <option value="">Select Level</option>
+          <option>100</option>
+          <option>200</option>
+          <option>300</option>
+          <option>400</option>
+          <option>500</option>
+        </select>
+      </div>
+      <button type="submit" class="btn">Submit</button>
+      <button type="reset" class="btn btn--alt">Cancel</button>
+    </form>
+  </main>
+
+  <script>
+    // Save to localStorage and redirect
+    document.getElementById('studentForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const student = {
+        fullname:  form.fullname.value.trim(),
+        matno:     form.matno.value.trim(),
+        faculty:   form.faculty.value.trim(),
+        department:form.department.value.trim(),
+        email:     form.email.value.trim(),
+        level:     form.level.value
+      };
+      const list = JSON.parse(localStorage.getItem('students') || '[]');
+      list.push(student);
+      localStorage.setItem('students', JSON.stringify(list));
+      window.location.href = 'records.html';
+    });
+  </script>
+</body>
+</html>
